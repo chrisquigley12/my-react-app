@@ -14,19 +14,24 @@ body{
 }
 
 /* Layout */
-.wrap{min-height:100dvh; display:grid; grid-template-rows:auto 1fr; background:#fff;}
+.wrap{min-height:100dvh; display:flex; align-items:center;justify-content:center; background:#fff;}
 .brand{font:600 20px/1.2 -apple-system,BlinkMacSystemFont,"SF Pro Display",Helvetica Neue,Arial,sans-serif; letter-spacing:.2px; padding:20px 24px;}
 .shell{display:grid; place-items:start center; padding:20px;}
 .panel{width:100%;
   max-width: 600px;
   margin: 0 auto;
-  padding:0 16px;
+  padding:20px;
 }
 .form{
   display: grid;
   gap:28px
 }
-
+@media (max-width: 480px){
+  .panel{
+    max-width: 100%
+    padding 16px
+  }
+}
 /* Headings */
 .h1{font:700 clamp(36px,8vw,52px)/1.05 -apple-system,BlinkMacSystemFont,"SF Pro Display",Helvetica Neue,Arial,sans-serif; margin:24px 0 6px;}
 .sub{margin:0 0 40px; color:var(--muted); font:400 15px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text",Helvetica Neue,Arial;}
