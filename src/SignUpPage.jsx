@@ -1,106 +1,106 @@
 import { useState } from "react";
+import "./SignUpPage.css";
 
 export default function SignUpPage() {
-  const [fullName, setFullName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [notify, setNotify] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
+  const [pw, setPw] = useState("");
+  const [pw2, setPw2] = useState("");
+  const [notify, setNotify] = useState(false);
+  const [busy, setBusy] = useState(false);
 
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const phoneDigits = phone.replace(/\D/g, "");
-  const phoneOk = phoneDigits.length >= 10;
-  const nameOk = fullName.trim().length >= 2;
-  const formOk = emailOk && phoneOk && nameOk;
+  const nameOk = name.trim().length > 0;
+  const pwOk = pw.length >= 8;
+  const match = pw && pw === pw2;
+  const formOk = emailOk && nameOk && pwOk && match;
 
   async function onSubmit(e) {
     e.preventDefault();
     if (!formOk) return;
-    setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setSubmitting(false);
-    console.log({ fullName, email, phone: phoneDigits, notify });
-    alert("Thanks! You're in. We'll be in touch.");
+    setBusy(true);
+    await new Promise((r) => setTimeout(r, 800));
+    alert("Welcome to Book’in!");
+    setBusy(false);
   }
 
   return (
     <main className="wrap">
-      <section className="card pop">
-        <header className="header">
-          <div className="glyph" aria-hidden>
-            
-          </div>
-          <h1 className="title">Welcome to Book'in</h1>
-          <p className="sub">Get early access and booking updates.</p>
-        </header>
+      <div className="brand">Book’in.</div>
 
-        <form className="form" onSubmit={onSubmit} noValidate>
-          <label className="field">
-            <span className="label">Full name</span>
-            <input
-              autoComplete="name"
-              placeholder="Ada Lovelace"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              aria-invalid={nameOk ? "false" : "true"}
-            />
-            {!nameOk && fullName && (
-              <span className="hint">Name must be at least 2 characters.</span>
-            )}
-          </label>
+      <div className="shell">
+        <section className="panel">
+          <h1 className="h1">Sign Up</h1>
+          <p className="sub">Create your account</p>
 
-          <label className="field">
-            <span className="label">Email</span>
-            <input
-              type="email"
-              autoComplete="email"
-              placeholder="ada@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              aria-invalid={emailOk ? "false" : "true"}
-            />
-            {!emailOk && email && (
-              <span className="hint">Enter a valid email.</span>
-            )}
-          </label>
+          <form className="form" onSubmit={onSubmit} noValidate>
+            <label className="field">
+              <span className="label">Name</span>
+              <input
+                className="input"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </label>
 
-          <label className="field">
-            <span className="label">Phone</span>
-            <input
-              inputMode="tel"
-              autoComplete="tel"
-              placeholder="+1 555 123 4567"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              aria-invalid={phoneOk ? "false" : "true"}
-            />
-            {!phoneOk && phone && (
-              <span className="hint">Use at least 10 digits.</span>
-            )}
-          </label>
+            <label className="field">
+              <span className="label">Email</span>
+              <input
+                className="input"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {!emailOk && email && (
+                <span className="hint">Enter a valid email.</span>
+              )}
+            </label>
 
-          <label className="toggle">
-            <input
-              type="checkbox"
-              checked={notify}
-              onChange={(e) => setNotify(e.target.checked)}
-            />
-            <span>Send me booking notifications</span>
-          </label>
+            <label className="field">
+              <span className="label">Password</span>
+              <input
+                className="input"
+                type="password"
+                placeholder="••••••••"
+                value={pw}
+                onChange={(e) => setPw(e.target.value)}
+              />
+              {!pwOk && pw && (
+                <span className="hint">Use at least 8 characters.</span>
+              )}
+            </label>
 
-          <button
-            className={`cta ${!formOk || submitting ? "disabled" : ""}`}
-            disabled={!formOk || submitting}
-          >
-            {submitting ? "Submitting…" : "Join the list"}
-          </button>
+            <label className="field">
+              <span className="label">Confirm Password</span>
+              <input
+                className="input"
+                type="password"
+                placeholder="••••••••"
+                value={pw2}
+                onChange={(e) => setPw2(e.target.value)}
+              />
+              {pw2 && !match && (
+                <span className="hint">Passwords don’t match.</span>
+              )}
+            </label>
 
-          <p className="terms">
-            By continuing, you agree to our <a href="#">Terms</a> and{" "}
-            <a href="#">Privacy</a>.
-          </p>
-        </form>
-      </section>
+            <label className="toggle">
+              <input
+                type="checkbox"
+                checked={notify}
+                onChange={(e) => setNotify(e.target.checked)}
+              />
+              <span>Enroll in Notifications</span>
+            </label>
+
+            <button className="cta" disabled={!formOk || busy}>
+              {busy ? "Signing up…" : "SIGN UP"}
+            </button>
+          </form>
+        </section>
+      </div>
     </main>
   );
 }
